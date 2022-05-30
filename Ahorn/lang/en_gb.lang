@@ -1,0 +1,8 @@
+# Linked Sinking Platforms
+placements.entities.AidenHelper/LinkedSinkingPlatform.tooltips.flag=Links this entity with all other linked sinking platforms that have the same flag in the same room. An empty flag connects with no other entity.
+placements.entities.AidenHelper/LinkedSinkingPlatform.tooltips.outerColor=Hex color value of the outer color of the downwards line this entity creates.
+placements.entities.AidenHelper/LinkedSinkingPlatform.tooltips.innerColor=Hex color value of the inner color of the downwards line this entity creates.
+placements.entities.AidenHelper/LinkedSinkingPlatform.tooltips.surfaceIndex=Integer value which defines the sound made by walking on the platform.
+placements.entities.AidenHelper/LinkedSinkingPlatform.tooltips.width=The width of the platform.
+placements.entities.AidenHelper/LinkedSinkingPlatform.tooltips.texture=The texture the platform uses. Pulled from "objects/woodPlatform/" by default.
+placements.entities.AidenHelper/LinkedSinkingPlatform.tooltips.reversed=Defines whether the platform works in reverse. A reversed linked platform only has functionality when linked with a non-reversed linked platform.

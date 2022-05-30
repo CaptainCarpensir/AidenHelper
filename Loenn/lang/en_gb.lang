@@ -1,0 +1,12 @@
+# Mod Name
+mods.AidenHelper.name=AidenHelper
+
+# Linked Sinking Platforms
+entities.AidenHelper/LinkedSinkingPlatform.placements.name.sinkingPlatform=Linked Sinking Platform (AidenHelper)
+entities.AidenHelper/LinkedSinkingPlatform.attributes.description.flag=Links this entity with all other linked sinking platforms that have the same flag in the same room. An empty flag connects with no other entity.
+entities.AidenHelper/LinkedSinkingPlatform.attributes.description.outerColor=Hex color value of the outer color of the downwards line this entity creates.
+entities.AidenHelper/LinkedSinkingPlatform.attributes.description.innerColor=Hex color value of the inner color of the downwards line this entity creates.
+entities.AidenHelper/LinkedSinkingPlatform.attributes.description.surfaceIndex=Integer value which defines the sound made by walking on the platform.
+entities.AidenHelper/LinkedSinkingPlatform.attributes.description.width=The width of the platform.
+entities.AidenHelper/LinkedSinkingPlatform.attributes.description.texture=The texture the platform uses. Pulled from "objects/woodPlatform/" by default.
+entities.AidenHelper/LinkedSinkingPlatform.attributes.description.reversed=Defines whether the platform works in reverse. A reversed linked platform only has functionality when linked with a non-reversed linked platform.

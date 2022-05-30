@@ -1,0 +1,6 @@
+﻿- Name: AidenHelper
+  Version: 1.0.0
+  DLL: bin/Debug/AidenHelper.dll
+  Dependencies:
+    - Name: Everest
+      Version: 1.600.0
