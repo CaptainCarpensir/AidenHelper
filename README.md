@@ -6,7 +6,7 @@
  If you find bugs, create a new issue or a pull request to let me know, or fix it yourself
 
 ## Changelog
-### Version 1.0
+### Version 0.1
 #### Features:
  - LinkedSinkingPlatform entity included
  - Ahorn plugin support
