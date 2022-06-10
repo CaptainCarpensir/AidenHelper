@@ -126,6 +126,8 @@ namespace Celeste.Mod.AidenHelper.Entities
                         {
 							item.enabled = true;
                         }
+						// Call move on each item so that you can't prevent movement by buffering inputs
+						item.Move(playerRider, endY - startY);
 					}
 					MasterOfGroup = true;
 				}

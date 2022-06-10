@@ -24,7 +24,8 @@ namespace AidenHelper.Entities
 		public override void Added(Scene scene)
 		{
 			base.Added(scene);
-			height = (float)SceneAs<Level>().Bounds.Height - (base.Y - (float)SceneAs<Level>().Bounds.Y);
+			//height = (float)SceneAs<Level>().Bounds.Height - (base.Y - (float)SceneAs<Level>().Bounds.Y);
+			height = -(Position.Y - midPos.Y);
 		}
 
 		public override void Render()
