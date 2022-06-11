@@ -22,6 +22,8 @@ namespace Celeste.Mod.AidenHelper.Entities
 		private float downTimer;
 		private bool reversed;
 		private bool enabled;
+		private bool downSFXEnabled;
+		private bool upSFXEnabled;
 
 		private string innerColor;
 		private string outerColor;
@@ -65,6 +67,8 @@ namespace Celeste.Mod.AidenHelper.Entities
 			innerColor = data.Attr("innerColor", "160b12");
 			if (reversed) this.Position = new Vector2(X, endY);
 			enabled = false;
+			downSFXEnabled = false;
+			upSFXEnabled = false;
 		}
 
 		public override void Awake(Scene scene)
@@ -124,6 +128,7 @@ namespace Celeste.Mod.AidenHelper.Entities
 						item.master = this;
 						if(item.reversed)
                         {
+							// Enabling prevents reverse platforms from ever acting as master
 							item.enabled = true;
                         }
 						// Call move on each item so that you can't prevent movement by buffering inputs
@@ -167,6 +172,7 @@ namespace Celeste.Mod.AidenHelper.Entities
 		{
 			float mult = (endY - startY) / masterDiff;
 
+			// Set speed values and start movement audio
 			if (playerRider != null)
 			{
 				if (riseTimer <= 0f)
@@ -178,12 +184,12 @@ namespace Celeste.Mod.AidenHelper.Entities
 					shaker.ShakeFor(0.15f, removeOnFinish: false);
 				}
 				riseTimer = 0.1f;
-				speed = Calc.Approach(speed, (reversed ? -1 : 1) * (playerRider.Ducking ? 60f : 30f) * mult, 400f * mult * Engine.DeltaTime);
+				speed = Calc.Approach(speed, (reversed ? -1 : 1) * (playerRider.Ducking ? 60f : 30f) * mult, 400f * Engine.DeltaTime);
 			}
 			else if (riseTimer > 0f)
 			{
 				riseTimer -= Engine.DeltaTime;
-				speed = Calc.Approach(speed, (reversed ? -1 : 1) * 45f * mult, 600f * mult * Engine.DeltaTime);
+				speed = Calc.Approach(speed, (reversed ? -1 : 1) * 45f * mult, 600f * Engine.DeltaTime);
 			}
 			else
 			{
@@ -194,8 +200,10 @@ namespace Celeste.Mod.AidenHelper.Entities
 
 			if (speed > 0f && base.ExactPosition.Y < endY)
 			{
-				if (!downSfx.Playing)
+				
+				if (!downSfx.Playing && !downSFXEnabled)
 				{
+					downSFXEnabled = true;
 					if(!reversed)
                     {
 						downSfx.Play("event:/game/03_resort/platform_vert_down_loop");
@@ -206,14 +214,16 @@ namespace Celeste.Mod.AidenHelper.Entities
 					}
 				}
 				downSfx.Param("ducking", (playerRider != null && playerRider.Ducking) ? 1 : 0);
-				if (upSfx.Playing)
+				if (upSfx.Playing && upSFXEnabled)
 				{
+					upSFXEnabled = false;
 					upSfx.Stop();
 				}
 				MoveTowardsY(endY, speed * Engine.DeltaTime);
 			}
 			else if (speed > 0f)
 			{
+				
 				if (downTimer <= 0f)
 				{
 					downSfx.Stop();
@@ -223,9 +233,10 @@ namespace Celeste.Mod.AidenHelper.Entities
 				downTimer = 0.1f;
 			}
 			else if (speed < 0f && base.ExactPosition.Y > startY)
-			{
-				if (!upSfx.Playing)
+			{    
+				if (!upSfx.Playing && !upSFXEnabled)
 				{
+					upSFXEnabled = true;
 					if(!reversed)
                     {
 						upSfx.Play("event:/game/03_resort/platform_vert_up_loop");
@@ -235,8 +246,9 @@ namespace Celeste.Mod.AidenHelper.Entities
 						upSfx.Play("event:/game/03_resort/platform_vert_down_loop");
 					}
 				}
-				if (downSfx.Playing)
+				if (downSfx.Playing && downSFXEnabled)
 				{
+					downSFXEnabled = false;
 					downSfx.Stop();
 				}
 				MoveTowardsY(startY, (0f - speed) * Engine.DeltaTime);
