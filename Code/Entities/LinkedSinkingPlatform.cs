@@ -22,6 +22,8 @@ namespace Celeste.Mod.AidenHelper.Entities
 		private float downTimer;
 		private bool reversed;
 		private bool enabled;
+
+		// Used for boolean case to prevent lag caused by time crystals
 		private bool downSFXEnabled;
 		private bool upSFXEnabled;
 
@@ -200,7 +202,7 @@ namespace Celeste.Mod.AidenHelper.Entities
 
 			if (speed > 0f && base.ExactPosition.Y < endY)
 			{
-				
+				// DownSFX looks redundant here, but prevents from start/stop cycle from happening with time stop
 				if (!downSfx.Playing && !downSFXEnabled)
 				{
 					downSFXEnabled = true;
@@ -233,7 +235,8 @@ namespace Celeste.Mod.AidenHelper.Entities
 				downTimer = 0.1f;
 			}
 			else if (speed < 0f && base.ExactPosition.Y > startY)
-			{    
+			{
+				// UpSFX looks redundant here, but prevents from start/stop cycle from happening with time stop
 				if (!upSfx.Playing && !upSFXEnabled)
 				{
 					upSFXEnabled = true;
