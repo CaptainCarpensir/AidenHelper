@@ -129,10 +129,10 @@ namespace Celeste.Mod.AidenHelper.Entities
 						item.MasterOfGroup = false;
 						item.master = this;
 						if(item.reversed)
-                        {
+						{
 							// Enabling prevents reverse platforms from ever acting as master
 							item.enabled = true;
-                        }
+						}
 						// Call move on each item so that you can't prevent movement by buffering inputs
 						item.Move(playerRider, endY - startY);
 					}
@@ -186,17 +186,17 @@ namespace Celeste.Mod.AidenHelper.Entities
 					shaker.ShakeFor(0.15f, removeOnFinish: false);
 				}
 				riseTimer = 0.1f;
-				speed = Calc.Approach(speed, (reversed ? -1 : 1) * (playerRider.Ducking ? 60f : 30f) * mult, 400f * Engine.DeltaTime);
+				speed = Calc.Approach(speed, (reversed ? -1 : 1) * (playerRider.Ducking ? 60f : 30f) * mult, 400f * mult * Engine.DeltaTime);
 			}
 			else if (riseTimer > 0f)
 			{
 				riseTimer -= Engine.DeltaTime;
-				speed = Calc.Approach(speed, (reversed ? -1 : 1) * 45f * mult, 600f * Engine.DeltaTime);
+				speed = Calc.Approach(speed, (reversed ? -1 : 1) * 45f * mult, 600f * mult * Engine.DeltaTime);
 			}
 			else
 			{
 				downTimer -= Engine.DeltaTime;
-				speed = Calc.Approach(speed, (reversed ? -1 : 1) * -50f, 400f * Engine.DeltaTime);
+				speed = Calc.Approach(speed, (reversed ? -1 : 1) * -50f, 400f * mult * Engine.DeltaTime);
 			}
 
 
@@ -207,11 +207,11 @@ namespace Celeste.Mod.AidenHelper.Entities
 				{
 					downSFXEnabled = true;
 					if(!reversed)
-                    {
+					{
 						downSfx.Play("event:/game/03_resort/platform_vert_down_loop");
 					}
 					else
-                    {
+					{
 						downSfx.Play("event:/game/03_resort/platform_vert_up_loop");
 					}
 				}
@@ -241,11 +241,11 @@ namespace Celeste.Mod.AidenHelper.Entities
 				{
 					upSFXEnabled = true;
 					if(!reversed)
-                    {
+					{
 						upSfx.Play("event:/game/03_resort/platform_vert_up_loop");
 					}
 					else
-                    {
+					{
 						upSfx.Play("event:/game/03_resort/platform_vert_down_loop");
 					}
 				}
