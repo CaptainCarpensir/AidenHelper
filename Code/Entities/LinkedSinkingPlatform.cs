@@ -203,7 +203,7 @@ namespace Celeste.Mod.AidenHelper.Entities
 			if (speed > 0f && base.ExactPosition.Y < endY)
 			{
 				// DownSFX looks redundant here, but prevents from start/stop cycle from happening with time stop
-				if (!downSfx.Playing && !downSFXEnabled)
+				if (!downSFXEnabled)
 				{
 					downSFXEnabled = true;
 					if(!reversed)
@@ -215,13 +215,41 @@ namespace Celeste.Mod.AidenHelper.Entities
 						downSfx.Play("event:/game/03_resort/platform_vert_up_loop");
 					}
 				}
-				downSfx.Param("ducking", (playerRider != null && playerRider.Ducking) ? 1 : 0);
-				if (upSfx.Playing && upSFXEnabled)
+				if (upSFXEnabled)
 				{
 					upSFXEnabled = false;
 					upSfx.Stop();
 				}
+				downSfx.Param("ducking", (playerRider != null && playerRider.Ducking) ? 1 : 0);
 				MoveTowardsY(endY, speed * Engine.DeltaTime);
+			}
+			else if (speed < 0f && base.ExactPosition.Y > startY)
+			{
+				// UpSFX looks redundant here, but prevents from start/stop cycle from happening with time stop
+				if (!upSFXEnabled)
+				{
+					upSFXEnabled = true;
+					if (!reversed)
+					{
+						upSfx.Play("event:/game/03_resort/platform_vert_up_loop");
+					}
+					else
+					{
+						upSfx.Play("event:/game/03_resort/platform_vert_down_loop");
+					}
+				}
+				if (downSFXEnabled)
+				{
+					downSFXEnabled = false;
+					downSfx.Stop();
+				}
+				MoveTowardsY(startY, (0f - speed) * Engine.DeltaTime);
+				if (base.ExactPosition.Y <= startY)
+				{
+					upSfx.Stop();
+					Audio.Play("event:/game/03_resort/platform_vert_end", Position);
+					shaker.ShakeFor(0.1f, removeOnFinish: false);
+				}
 			}
 			else if (speed > 0f)
 			{
@@ -234,33 +262,17 @@ namespace Celeste.Mod.AidenHelper.Entities
 				}
 				downTimer = 0.1f;
 			}
-			else if (speed < 0f && base.ExactPosition.Y > startY)
+
+			// Case to fix platforms not stopping audio, can likely be fixed above but I'm too dumb
+			if (reversed && downSFXEnabled && base.ExactPosition.Y >= endY)
 			{
-				// UpSFX looks redundant here, but prevents from start/stop cycle from happening with time stop
-				if (!upSfx.Playing && !upSFXEnabled)
-				{
-					upSFXEnabled = true;
-					if(!reversed)
-					{
-						upSfx.Play("event:/game/03_resort/platform_vert_up_loop");
-					}
-					else
-					{
-						upSfx.Play("event:/game/03_resort/platform_vert_down_loop");
-					}
-				}
-				if (downSfx.Playing && downSFXEnabled)
-				{
-					downSFXEnabled = false;
-					downSfx.Stop();
-				}
-				MoveTowardsY(startY, (0f - speed) * Engine.DeltaTime);
-				if (base.ExactPosition.Y <= startY)
-				{
-					upSfx.Stop();
-					Audio.Play("event:/game/03_resort/platform_vert_end", Position);
-					shaker.ShakeFor(0.1f, removeOnFinish: false);
-				}
+				downSFXEnabled = false;
+				downSfx.Stop();
+			}
+			if (!reversed && upSFXEnabled && base.ExactPosition.Y <= startY)
+			{
+				upSFXEnabled = false;
+				upSfx.Stop();
 			}
 		}
 	}
