@@ -263,6 +263,13 @@ namespace Celeste.Mod.AidenHelper.Entities
 				}
 				downTimer = 0.1f;
 			}
+
+			// Case to fix platforms not stopping audio caused by reversed linked movement
+			if (reversed && downSFXEnabled && base.ExactPosition.Y >= endY)
+			{
+				downSFXEnabled = false;
+				downSfx.Stop();
+			}
 		}
 	}
 }
