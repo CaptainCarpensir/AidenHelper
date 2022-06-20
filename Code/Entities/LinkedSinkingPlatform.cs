@@ -62,7 +62,7 @@ namespace Celeste.Mod.AidenHelper.Entities
 		{
 			overrideTexture = data.Attr("texture", "");
 			SurfaceSoundIndex = data.Int("surfaceIndex", -1);
-			groupFlag = data.Attr("flag", "");
+			groupFlag = data.Attr("flag", "") + data.Level.Name;
 			endY = data.NodesWithPosition(new Vector2(0, 0))[1].Y + offset.Y;
 			reversed = data.Bool("reversed");
 			outerColor = data.Attr("outerColor", "2a1923");
@@ -126,7 +126,8 @@ namespace Celeste.Mod.AidenHelper.Entities
 				{
 					foreach (LinkedSinkingPlatform item in Group)
 					{
-						if (item == null) continue;
+						// Call move on each item so that you can't prevent movement by buffering inputs
+						item.Move(playerRider, endY - startY);
 
 						item.MasterOfGroup = false;
 						item.master = this;
@@ -135,8 +136,6 @@ namespace Celeste.Mod.AidenHelper.Entities
 							// Enabling prevents reverse platforms from ever acting as master
 							item.enabled = true;
 						}
-						// Call move on each item so that you can't prevent movement by buffering inputs
-						item.Move(playerRider, endY - startY);
 					}
 					MasterOfGroup = true;
 				}
@@ -263,18 +262,6 @@ namespace Celeste.Mod.AidenHelper.Entities
 					shaker.ShakeFor(0.1f, removeOnFinish: false);
 				}
 				downTimer = 0.1f;
-			}
-
-			// Case to fix platforms not stopping audio, can likely be fixed above but I'm too dumb
-			if (reversed && downSFXEnabled && base.ExactPosition.Y >= endY)
-			{
-				downSFXEnabled = false;
-				downSfx.Stop();
-			}
-			if (!reversed && upSFXEnabled && base.ExactPosition.Y <= startY)
-			{
-				upSFXEnabled = false;
-				upSfx.Stop();
 			}
 		}
 	}
