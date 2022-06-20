@@ -51,7 +51,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Code\Entities\AidenHelperSinkingPlatformLine.cs" />
-    <Compile Include="Code\Entities\AidenHelperFallingBlock.cs" />
     <Compile Include="Code\Entities\LinkedSinkingPlatform.cs" />
     <Compile Include="Module\AidenHelperModule.cs" />
     <Compile Include="obj\Debug\.NETFramework,Version=v4.5.2.AssemblyAttributes.cs" />

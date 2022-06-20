@@ -126,6 +126,8 @@ namespace Celeste.Mod.AidenHelper.Entities
 				{
 					foreach (LinkedSinkingPlatform item in Group)
 					{
+						if (item == null) continue;
+
 						item.MasterOfGroup = false;
 						item.master = this;
 						if(item.reversed)
