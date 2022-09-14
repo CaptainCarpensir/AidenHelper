@@ -1,5 +1,6 @@
 local resortPlatformHelper = require("helpers.resort_platforms")
 local utils = require("utils")
+local nodeStruct = require("structs.node")
 
 local textures = {
     "default", "cliffside"
@@ -15,6 +16,7 @@ local linkedSinkingPlatform = {}
 linkedSinkingPlatform.name = "AidenHelper/LinkedSinkingPlatform"
 linkedSinkingPlatform.depth = 1
 linkedSinkingPlatform.nodeLimits = {1,1}
+linkedSinkingPlatform.nodeLineRenderType = "line"
 linkedSinkingPlatform.fieldInformation = {
     texture = {
         options = textureOptions
@@ -23,17 +25,16 @@ linkedSinkingPlatform.fieldInformation = {
 
 linkedSinkingPlatform.placements = {
     name = "linkedSinkingPlatform",
-}
-
-for i, texture in ipairs(textures) do
-    linkedSinkingPlatform.placements[i] = {
-        name = texture,
-        data = {
-            width = 16,
-            texture = texture
-        }
+    data = {
+        flag = "",
+        outerColor = "2a1923",
+        innerColor = "160b12",
+        surfaceIndex = 15,
+        width = 8,
+        reversed = false,
+        texture = "default"
     }
-end
+}
 
 function linkedSinkingPlatform.sprite(room, entity)
     local sprites = {}
@@ -55,6 +56,30 @@ function linkedSinkingPlatform.nodeSprite(room, entity, node)
     return resortPlatformHelper.addPlatformSprites({}, entity, normalizedNode)
 end
 
-linkedSinkingPlatform.selection = resortPlatformHelper.getSelection
+function linkedSinkingPlatform.selection(room, entity)
+    local x, y = entity.x or 0, entity.y or 0
+    local width = entity.width or 16
+    local nodes = entity.nodes or {}
+
+    local mainRectangle = utils.rectangle(x, y, width, 8)
+    local nodeRectangles = {}
+
+    for i, node in ipairs(nodes) do
+        nodeRectangles[i] = utils.rectangle(x, node.y, width, 8)
+    end
+
+    return mainRectangle, nodeRectangles
+end
+
+function linkedSinkingPlatform.onMove(room, entity, nodeIndex, offsetX, offsetY)
+    if nodeIndex == 0 and entity.y + 8 + offsetY > entity.nodes[1].y then
+        return false
+    end
+    if nodeIndex == 1 and (entity.y + 8 > entity.nodes[1].y + offsetY or offsetX ~= 0) then
+        return false
+    end
+
+    return true
+end
 
 return linkedSinkingPlatform

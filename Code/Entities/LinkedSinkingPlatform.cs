@@ -1,7 +1,6 @@
 ﻿using Celeste.Mod.Entities;
 using Microsoft.Xna.Framework;
 using Monocle;
-using System;
 using System.Collections.Generic;
 using AidenHelper.Entities;
 
@@ -29,6 +28,7 @@ namespace Celeste.Mod.AidenHelper.Entities
 
 		private string innerColor;
 		private string outerColor;
+		private string levelTag;
 
 		private MTexture[] textures;
 		private Shaker shaker;
@@ -60,9 +60,10 @@ namespace Celeste.Mod.AidenHelper.Entities
 		public LinkedSinkingPlatform(EntityData data, Vector2 offset)
 			: this(data.Position + offset, data.Width, "")
 		{
+			levelTag = data.Level.Name;
 			overrideTexture = data.Attr("texture", "");
 			SurfaceSoundIndex = data.Int("surfaceIndex", -1);
-			groupFlag = data.Attr("flag", "") + data.Level.Name;
+			groupFlag = data.Attr("flag", "") + levelTag;
 			endY = data.NodesWithPosition(new Vector2(0, 0))[1].Y + offset.Y;
 			reversed = data.Bool("reversed");
 			outerColor = data.Attr("outerColor", "2a1923");
@@ -81,7 +82,7 @@ namespace Celeste.Mod.AidenHelper.Entities
 				master = this;
 				foreach (LinkedSinkingPlatform item in scene.Tracker.GetEntities<LinkedSinkingPlatform>())
 				{
-					if (item.groupFlag == groupFlag && item.groupFlag != "")
+					if (item.groupFlag == groupFlag && item.groupFlag != levelTag)
 					{
 						Group.Add(item);
 					}
