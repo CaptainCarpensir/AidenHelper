@@ -13,3 +13,8 @@ entities.AidenHelper/LinkedSinkingPlatform.attributes.description.reversed=Defin
 
 # Linked Dash Switches
 entities.AidenHelper/LinkedDashSwitch.placements.name.linkedDashSwitch=Linked Dash Switch
+entities.AidenHelper/LinkedDashSwitch.attributes.description.flag=Links this entity with all other linked dash switches that have the same flag in the same room. An empty flag connects with no other entity.
+entities.AidenHelper/LinkedDashSwitch.attributes.description.persistent=Once turned on, it will stay activated, even if the player dies.
+entities.AidenHelper/LinkedDashSwitch.attributes.description.sprite=Changes the visual appearance of the switch.
+entities.AidenHelper/LinkedDashSwitch.attributes.description.direction=Changes the direction of the switch.
+entities.AidenHelper/LinkedDashSwitch.attributes.description.reversed=A reversed switch is activated by default.
