@@ -51,13 +51,13 @@ function linkedDashSwitch.sprite(room, entity)
     end
 
     if direction == "Left" then
-        sprite:addPosition(0, 8)
-        sprite.rotation = math.pi
+        sprite:addPosition(8, 8)
+        sprite.rotation = 0
     end
 
     if direction == "Right" then
-        sprite:addPosition(8, 8)
-        sprite.rotation = 0
+        sprite:addPosition(0, 8)
+        sprite.rotation = math.pi
     end
 
     return sprite
@@ -70,7 +70,6 @@ for _, direction in ipairs(dirOptions) do
             flag = "",
             persistent = false,
             sprite = "default",
-            allGates = false,
             reversed = false,
             direction = direction
         }

@@ -22,6 +22,7 @@ namespace AidenHelper.Entities
 
 		private Sides side;
 
+		private Vector2 unpressedTarget;
 		private Vector2 pressedTarget;
 		private bool pressed;
 		private Vector2 pressDirection;
@@ -34,96 +35,94 @@ namespace AidenHelper.Entities
 		private bool persistent;
 		private bool mirrorMode;
 		private bool playerWasOn;
-		private bool allGates;
 
 		private bool reversed;
 		protected string groupFlag;
 
 		private Sprite sprite;
 
-		private string FlagName => GetFlagName(id);
+		private string StateFlag => GetStateFlag(id);
+		private string ConstructedFlag => GetConstructedFlag(id);
+		private TempleGate claimedGate;
 
-		public LinkedDashSwitch(Vector2 position, Sides side, bool persistent, bool allGates, bool reversed, string groupFlag, EntityID id, string spriteName)
+		public LinkedDashSwitch(Vector2 position, Sides side, bool persistent, bool reversed, string groupFlag, EntityID id, string spriteName)
 			: base(position, 0f, 0f, safe: true)
 		{
 			this.reversed = reversed;
 			this.groupFlag = groupFlag;
 			this.side = side;
 			this.persistent = persistent;
-			this.allGates = allGates;
 			this.id = id;
 			mirrorMode = spriteName != "default";
 			Add(sprite = GFX.SpriteBank.Create("dashSwitch_" + spriteName));
 			sprite.Play("idle");
-			if (side == Sides.Up || side == Sides.Down)
-			{
-				base.Collider.Width = 16f;
-				base.Collider.Height = 8f;
-			}
-			else
-			{
-				base.Collider.Width = 8f;
-				base.Collider.Height = 16f;
-			}
-			switch (side)
-			{
-				case Sides.Down:
+			OnDashCollide = OnDashed;
+		}
+
+		public LinkedDashSwitch(EntityData data, Vector2 offset) : this(
+			data.Position + offset,
+			data.Enum("side", Sides.Up),
+			data.Bool("persistent"),
+			data.Bool("reversed"),
+			data.Attr("flag"),
+			new EntityID(data.Level.Name, data.ID),
+			data.Attr("sprite", "default")) 
+		{
+			String sideAttr = data.Attr("direction");
+			switch (sideAttr)
+            {
+				case "Up":
+					this.side = Sides.Up;
 					sprite.Position = new Vector2(8f, 8f);
 					sprite.Rotation = (float)Math.PI / 2f;
 					pressedTarget = Position + Vector2.UnitY * 8f;
 					pressDirection = Vector2.UnitY;
+					base.Collider.Width = 16f;
+					base.Collider.Height = 8f;
 					startY = base.Y;
 					break;
-				case Sides.Up:
+				case "Down":
+					this.side = Sides.Down;
 					sprite.Position = new Vector2(8f, 0f);
 					sprite.Rotation = -(float)Math.PI / 2f;
 					pressedTarget = Position + Vector2.UnitY * -8f;
 					pressDirection = -Vector2.UnitY;
+					base.Collider.Width = 16f;
+					base.Collider.Height = 8f;
+					startY = base.Y;
 					break;
-				case Sides.Right:
+				case "Left":
+					this.side = Sides.Left;
 					sprite.Position = new Vector2(8f, 8f);
 					sprite.Rotation = 0f;
 					pressedTarget = Position + Vector2.UnitX * 8f;
 					pressDirection = Vector2.UnitX;
+					base.Collider.Width = 8f;
+					base.Collider.Height = 16f;
 					break;
-				case Sides.Left:
+				case "Right":
+					this.side = Sides.Right;
 					sprite.Position = new Vector2(0f, 8f);
 					sprite.Rotation = (float)Math.PI;
 					pressedTarget = Position + Vector2.UnitX * -8f;
 					pressDirection = -Vector2.UnitX;
+					base.Collider.Width = 8f;
+					base.Collider.Height = 16f;
 					break;
-			}
-			OnDashCollide = OnDashed;
-		}
-
-		public static LinkedDashSwitch Create(EntityData data, Vector2 offset, EntityID id)
-		{
-			Console.WriteLine("Attempts creation: ", id);
-			Vector2 position = data.Position + offset;
-			bool flag = data.Bool("persistent");
-			bool flag2 = data.Bool("allGates");
-			bool flag3 = data.Bool("reversed");
-			string flag4 = data.Attr("flag");
-			string spriteName = data.Attr("sprite", "default");
-			if (data.Name.Equals("AidenHelper/LinkedDashSwitchHorizontal"))
-			{
-				if (data.Bool("leftSide"))
-				{
-					return new LinkedDashSwitch(position, Sides.Left, flag, flag2, flag3, flag4, id, spriteName);
-				}
-				return new LinkedDashSwitch(position, Sides.Right, flag, flag2, flag3, flag4, id, spriteName);
-			}
-			if (data.Bool("ceiling"))
-			{
-				return new LinkedDashSwitch(position, Sides.Up, flag, flag2, flag3, flag4, id, spriteName);
-			}
-			return new LinkedDashSwitch(position, Sides.Down, flag, flag2, flag3, flag4, id, spriteName);
+            }
+			unpressedTarget = Position;
 		}
 
 		public override void Awake(Scene scene)
 		{
 			base.Awake(scene);
-			if (!persistent || !SceneAs<Level>().Session.GetFlag(FlagName))
+			claimedGate = GetGate();
+			if (!SceneAs<Level>().Session.GetFlag(ConstructedFlag))
+			{
+				SceneAs<Level>().Session.SetFlag(ConstructedFlag);
+				SceneAs<Level>().Session.SetFlag(StateFlag, reversed);
+			}
+			if (!SceneAs<Level>().Session.GetFlag(StateFlag))
 			{
 				return;
 			}
@@ -131,24 +130,13 @@ namespace AidenHelper.Entities
 			Position = pressedTarget - pressDirection * 2f;
 			pressed = true;
 			Collidable = false;
-			if (allGates)
-			{
-				foreach (TempleGate entity in base.Scene.Tracker.GetEntities<TempleGate>())
-				{
-					if (entity.Type == TempleGate.Types.NearestSwitch && entity.LevelID == id.Level)
-					{
-						entity.StartOpen();
-					}
-				}
-				return;
-			}
-			GetGate()?.StartOpen();
+			claimedGate?.StartOpen();
 		}
 
 		public override void Update()
 		{
 			base.Update();
-			if (pressed || side != Sides.Down)
+			if (pressed || side != Sides.Up)
 			{
 				return;
 			}
@@ -157,7 +145,6 @@ namespace AidenHelper.Entities
 			{
 				if (playerOnTop.Holding != null)
 				{
-					// TODO: Make sure master switching happens here as to not recursively press switches
 					OnDashed(playerOnTop, Vector2.UnitY);
 				}
 				else
@@ -199,7 +186,7 @@ namespace AidenHelper.Entities
 				// Linking behavior
 				foreach (LinkedDashSwitch entity in base.Scene.Tracker.GetEntities<LinkedDashSwitch>())
 				{
-					if (!entity.id.Equals(id) && entity.groupFlag == groupFlag)
+					if (!entity.id.Equals(id) && entity.groupFlag == groupFlag && groupFlag != "")
 					{
 						entity.OnGroupDashed(direction);
 					}
@@ -213,7 +200,17 @@ namespace AidenHelper.Entities
 			if (pressed)
             {
 				// Reset the button
-				// TODO: Make the button reset visually and mechanically work (needs to interact with temple gates)
+				sprite.Play("idle");
+				pressed = false;
+				Collidable = true;
+				MoveTo(unpressedTarget);
+				SceneAs<Level>().ParticlesFG.Emit(mirrorMode ? P_PressAMirror : P_PressA, 10, Position + sprite.Position, direction.Perpendicular() * 6f, sprite.Rotation - (float)Math.PI);
+				SceneAs<Level>().ParticlesFG.Emit(mirrorMode ? P_PressBMirror : P_PressB, 4, Position + sprite.Position, direction.Perpendicular() * 6f, sprite.Rotation - (float)Math.PI);
+				claimedGate?.Close();
+				if (persistent)
+				{
+					SceneAs<Level>().Session.SetFlag(StateFlag, false);
+				}
 			}
 			else
             {
@@ -232,24 +229,12 @@ namespace AidenHelper.Entities
 			Position -= pressDirection * 2f;
 			SceneAs<Level>().ParticlesFG.Emit(mirrorMode ? P_PressAMirror : P_PressA, 10, Position + sprite.Position, direction.Perpendicular() * 6f, sprite.Rotation - (float)Math.PI);
 			SceneAs<Level>().ParticlesFG.Emit(mirrorMode ? P_PressBMirror : P_PressB, 4, Position + sprite.Position, direction.Perpendicular() * 6f, sprite.Rotation - (float)Math.PI);
-			if (allGates)
-			{
-				foreach (TempleGate entity in base.Scene.Tracker.GetEntities<TempleGate>())
-				{
-					if (entity.Type == TempleGate.Types.NearestSwitch && entity.LevelID == id.Level)
-					{
-						entity.SwitchOpen();
-					}
-				}
-			}
-			else
-			{
-				GetGate()?.SwitchOpen();
-			}
+			claimedGate?.SwitchOpen();
+
 			base.Scene.Entities.FindFirst<TempleMirrorPortal>()?.OnSwitchHit(Math.Sign(base.X - (float)(base.Scene as Level).Bounds.Center.X));
 			if (persistent)
 			{
-				SceneAs<Level>().Session.SetFlag(FlagName);
+				SceneAs<Level>().Session.SetFlag(StateFlag);
 			}
 		}
 
@@ -277,9 +262,14 @@ namespace AidenHelper.Entities
 			return templeGate;
 		}
 
-		public static string GetFlagName(EntityID id)
+		public static string GetStateFlag(EntityID id)
 		{
 			return "dashSwitch_" + id.Key;
+		}
+
+		public static string GetConstructedFlag(EntityID id)
+		{
+			return "dashSwitchConstructed_" + id.Key;
 		}
 	}
 }
