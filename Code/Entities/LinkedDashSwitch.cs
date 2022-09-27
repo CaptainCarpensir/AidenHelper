@@ -186,7 +186,9 @@ namespace AidenHelper.Entities
 				// Linking behavior
 				foreach (LinkedDashSwitch entity in base.Scene.Tracker.GetEntities<LinkedDashSwitch>())
 				{
-					if (!entity.id.Equals(id) && entity.groupFlag == groupFlag && groupFlag != "")
+					if (entity.id.Equals(id)) continue;
+
+					if (entity.groupFlag == groupFlag && groupFlag != "")
 					{
 						entity.OnGroupDashed(direction);
 					}
@@ -207,10 +209,7 @@ namespace AidenHelper.Entities
 				SceneAs<Level>().ParticlesFG.Emit(mirrorMode ? P_PressAMirror : P_PressA, 10, Position + sprite.Position, direction.Perpendicular() * 6f, sprite.Rotation - (float)Math.PI);
 				SceneAs<Level>().ParticlesFG.Emit(mirrorMode ? P_PressBMirror : P_PressB, 4, Position + sprite.Position, direction.Perpendicular() * 6f, sprite.Rotation - (float)Math.PI);
 				claimedGate?.Close();
-				if (persistent)
-				{
-					SceneAs<Level>().Session.SetFlag(StateFlag, false);
-				}
+				if (persistent) SceneAs<Level>().Session.SetFlag(StateFlag, false);
 			}
 			else
             {
@@ -232,10 +231,7 @@ namespace AidenHelper.Entities
 			claimedGate?.SwitchOpen();
 
 			base.Scene.Entities.FindFirst<TempleMirrorPortal>()?.OnSwitchHit(Math.Sign(base.X - (float)(base.Scene as Level).Bounds.Center.X));
-			if (persistent)
-			{
-				SceneAs<Level>().Session.SetFlag(StateFlag);
-			}
+			if (persistent) SceneAs<Level>().Session.SetFlag(StateFlag);
 		}
 
 		private TempleGate GetGate()
@@ -264,12 +260,12 @@ namespace AidenHelper.Entities
 
 		public static string GetStateFlag(EntityID id)
 		{
-			return "dashSwitch_" + id.Key;
+			return "linkedDashSwitch_" + id.Key;
 		}
 
 		public static string GetConstructedFlag(EntityID id)
 		{
-			return "dashSwitchConstructed_" + id.Key;
+			return "linkedDashSwitchConstructed_" + id.Key;
 		}
 	}
 }
