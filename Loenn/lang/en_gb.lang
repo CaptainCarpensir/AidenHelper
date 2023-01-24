@@ -18,3 +18,18 @@ entities.AidenHelper/LinkedDashSwitch.attributes.description.persistent=Once tur
 entities.AidenHelper/LinkedDashSwitch.attributes.description.sprite=Changes the visual appearance of the switch.
 entities.AidenHelper/LinkedDashSwitch.attributes.description.direction=Changes the direction of the switch.
 entities.AidenHelper/LinkedDashSwitch.attributes.description.reversed=A reversed switch is activated by default.
+
+# Dash Kevin
+entities.AidenHelper/DashKevin.placements.name.both=Dash Kevin (Both)
+entities.AidenHelper/DashKevin.placements.name.vertical=Dash Kevin (Vertical)
+entities.AidenHelper/DashKevin.placements.name.horizontal=Dash Kevin (Horizontal)
+entities.AidenHelper/DashKevin.attributes.description.axes=Determines which directions the Dash Kevin can move.
+entities.AidenHelper/DashKevin.attributes.description.chillout=Whether the block should have the large face and get tired after moving.
+
+# Dash Dash Block
+entities.AidenHelper/DashDashBlock.placements.name.dash_dash_block=Dash Block
+entities.AidenHelper/DashDashBlock.attributes.description.blendin=Blends the block with the walls it touches, making it less apparent.
+entities.AidenHelper/DashDashBlock.attributes.description.tiletype=Determines the visual appearance of the wall.
+entities.AidenHelper/DashDashBlock.attributes.description.permanent=Once broken, the block will remain that way, even if the player dies.
+entities.AidenHelper/DashDashBlock.attributes.description.horizontal=Whether the dash block can be destroyed by pressing dash while in a horizontal position from the block.
+entities.AidenHelper/DashDashBlock.attributes.description.vertical=Whether the dash block can be destroyed by pressing dash while in a vertical position from the block.
