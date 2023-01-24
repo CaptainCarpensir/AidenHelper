@@ -1,10 +1,11 @@
 ﻿using System;
 using Celeste.Mod.Entities;
 using Microsoft.Xna.Framework;
+using Celeste;
 
-namespace Celeste.Mod.SS2023.SS2023Aiden.Entities
+namespace AidenHelper.Entities
 {
-    [CustomEntity("SS2023/DashDashBlock")]
+    [CustomEntity("AidenHelper/DashDashBlock")]
     public class DashDashBlock : DashBlock
     {
         private bool horizontal;

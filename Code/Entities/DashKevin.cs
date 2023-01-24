@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using Celeste.Mod.Entities;
 using Microsoft.Xna.Framework;
 using Monocle;
+using Celeste;
 
-namespace Celeste.Mod.SS2023.SS2023Aiden.Entities
+namespace AidenHelper.Entities
 {
-	[CustomEntity("SS2023/DashKevin")]
+	[CustomEntity("AidenHelper/DashKevin")]
 	[TrackedAs(typeof(CrushBlock))]
 	class DashKevin : Solid
     {

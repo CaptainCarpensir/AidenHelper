@@ -1,6 +1,5 @@
 local resortPlatformHelper = require("helpers.resort_platforms")
 local utils = require("utils")
-local nodeStruct = require("structs.node")
 
 local textures = {
     "default", "cliffside"
