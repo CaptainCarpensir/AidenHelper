@@ -1,15 +1,9 @@
-﻿using Celeste.Mod.UI;
-using FMOD.Studio;
-using Microsoft.Xna.Framework;
+﻿
 using Monocle;
 using Celeste;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Celeste.Mod;
+using AidenHelper.Effects;
 
 namespace AidenHelper.Module
 {
@@ -28,6 +22,7 @@ namespace AidenHelper.Module
         // Load runs before Celeste itself has initialized properly.
         public override void Load()
         {
+            Everest.Events.Level.OnLoadBackdrop += onLoadBackdrop;
         }
 
         // Optional, initialize anything after Celeste has initialized itself properly.
@@ -43,6 +38,16 @@ namespace AidenHelper.Module
         // Unload the entirety of your mod's content. Free up any native resources.
         public override void Unload()
         {
+            Everest.Events.Level.OnLoadBackdrop -= onLoadBackdrop;
+        }
+
+        private Backdrop onLoadBackdrop(MapData map, BinaryPacker.Element child, BinaryPacker.Element above)
+        {
+            if (child.Name.Equals("AidenHelper/MeteorShower", StringComparison.OrdinalIgnoreCase))
+            {
+                return new MeteorShower(child.AttrInt("numberOfMeteors"));
+            }
+            return null;
         }
 
     }
