@@ -1,9 +1,8 @@
 ﻿using System;
 using Celeste.Mod.Entities;
 using Microsoft.Xna.Framework;
-using Celeste;
 
-namespace AidenHelper.Entities
+namespace Celeste.Mod.AidenHelper.Entities
 {
     [CustomEntity("AidenHelper/DashDashBlock")]
     public class DashDashBlock : DashBlock

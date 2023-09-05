@@ -13,8 +13,8 @@ entities.AidenHelper/LinkedSinkingPlatform.attributes.description.reversed=Defin
 
 # Linked Dash Switches
 entities.AidenHelper/LinkedDashSwitch.placements.name.linkedDashSwitch=Linked Dash Switch
-entities.AidenHelper/LinkedDashSwitch.attributes.description.flag=Links this entity with all other linked dash switches that have the same flag in the same room. An empty flag connects with no other entity.
-entities.AidenHelper/LinkedDashSwitch.attributes.description.persistent=Once turned on, it will stay activated, even if the player dies.
+entities.AidenHelper/LinkedDashSwitch.attributes.description.flag=Links this entity with all other linked dash switches and gates that have the same flag in the same room. An empty flag connects with no other entity.
+entities.AidenHelper/LinkedDashSwitch.attributes.description.persistent=Switch state is saved between rooms and death.
 entities.AidenHelper/LinkedDashSwitch.attributes.description.sprite=Changes the visual appearance of the switch.
 entities.AidenHelper/LinkedDashSwitch.attributes.description.direction=Changes the direction of the switch.
 entities.AidenHelper/LinkedDashSwitch.attributes.description.reversed=A reversed switch is activated by default.
@@ -33,3 +33,15 @@ entities.AidenHelper/DashDashBlock.attributes.description.tiletype=Determines th
 entities.AidenHelper/DashDashBlock.attributes.description.permanent=Once broken, the block will remain that way, even if the player dies.
 entities.AidenHelper/DashDashBlock.attributes.description.horizontal=Whether the dash block can be destroyed by pressing dash while in a horizontal position from the block.
 entities.AidenHelper/DashDashBlock.attributes.description.vertical=Whether the dash block can be destroyed by pressing dash while in a vertical position from the block.
+
+# Linked Temple Gate
+entities.AidenHelper/LinkedTempleGate.placements.name.linkedTempleGate=Linked Temple Gate
+entities.AidenHelper/LinkedTempleGate.attributes.description.flag=Links this entity with linked dash switches that have the same flag in the same room. An empty flag connects with no other entity.
+entities.AidenHelper/LinkedTempleGate.attributes.description.persistent=Gate state is saved between rooms and death.
+entities.AidenHelper/LinkedTempleGate.attributes.description.sprite=Changes the visual appearance of the temple gate.
+entities.AidenHelper/LinkedTempleGate.attributes.description.reversed=A reversed gate is open by default.
+
+# Meteor Shower
+style.effects.AidenHelper/MeteorShower.name=Meteor Shower
+style.effects.AidenHelper/MeteorShower.attribute.frequency=Frequency
+style.effects.AidenHelper/MeteorShower.description.frequency=The frequency which meteors appear on average in meteors per second.

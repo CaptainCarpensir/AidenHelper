@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework;
 using Monocle;
 using System.Collections.Generic;
-using AidenHelper.Entities;
 
 namespace Celeste.Mod.AidenHelper.Entities
 {

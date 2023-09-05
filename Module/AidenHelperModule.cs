@@ -1,11 +1,7 @@
-﻿
-using Monocle;
-using Celeste;
-using System;
-using Celeste.Mod;
-using AidenHelper.Effects;
+﻿using System;
+using Celeste.Mod.AidenHelper.Effects;
 
-namespace AidenHelper.Module
+namespace Celeste.Mod.AidenHelper.Module
 {
     public class AidenHelper : EverestModule
     {
@@ -45,7 +41,7 @@ namespace AidenHelper.Module
         {
             if (child.Name.Equals("AidenHelper/MeteorShower", StringComparison.OrdinalIgnoreCase))
             {
-                return new MeteorShower(child.AttrInt("numberOfMeteors"));
+                return new MeteorShower(child.AttrFloat("frequency"));
             }
             return null;
         }

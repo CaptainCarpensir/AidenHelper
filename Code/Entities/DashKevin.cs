@@ -4,9 +4,8 @@ using System.Collections.Generic;
 using Celeste.Mod.Entities;
 using Microsoft.Xna.Framework;
 using Monocle;
-using Celeste;
 
-namespace AidenHelper.Entities
+namespace Celeste.Mod.AidenHelper.Entities
 {
 	[CustomEntity("AidenHelper/DashKevin")]
 	[TrackedAs(typeof(CrushBlock))]

@@ -1,12 +1,11 @@
-﻿using Celeste;
-using Celeste.Mod.Entities;
+﻿using Celeste.Mod.Entities;
 using Microsoft.Xna.Framework;
 using Monocle;
 using System;
 using System.Collections.Generic;
 using static Celeste.DashSwitch;
 
-namespace AidenHelper.Entities
+namespace Celeste.Mod.AidenHelper.Entities
 {
 	[CustomEntity("AidenHelper/LinkedDashSwitch")]
 	[Tracked]
@@ -43,7 +42,6 @@ namespace AidenHelper.Entities
 
 		private string StateFlag => GetStateFlag(id);
 		private string ConstructedFlag => GetConstructedFlag(id);
-		private TempleGate claimedGate;
 
 		public LinkedDashSwitch(Vector2 position, Sides side, bool persistent, bool reversed, string groupFlag, EntityID id, string spriteName)
 			: base(position, 0f, 0f, safe: true)
@@ -116,7 +114,6 @@ namespace AidenHelper.Entities
 		public override void Awake(Scene scene)
 		{
 			base.Awake(scene);
-			claimedGate = GetGate();
 			if (!SceneAs<Level>().Session.GetFlag(ConstructedFlag))
 			{
 				SceneAs<Level>().Session.SetFlag(ConstructedFlag);
@@ -130,7 +127,6 @@ namespace AidenHelper.Entities
 			Position = pressedTarget - pressDirection * 2f;
 			pressed = true;
 			Collidable = false;
-			claimedGate?.StartOpen();
 		}
 
 		public override void Update()
@@ -193,6 +189,21 @@ namespace AidenHelper.Entities
 						entity.OnGroupDashed(direction);
 					}
 				}
+				foreach (LinkedTempleGate entity in base.Scene.Tracker.GetEntities<LinkedTempleGate>())
+                {
+					if (entity.groupFlag == groupFlag && groupFlag != "")
+                    {
+						Console.WriteLine("gate " + entity.id.Key + "switched");
+						if (entity.open) 
+						{
+							entity.SwitchClose();
+                        } 
+						else
+                        {
+							entity.SwitchOpen();
+                        }
+                    }
+                }
 			}
 			return DashCollisionResults.NormalCollision;
 		}
@@ -208,7 +219,6 @@ namespace AidenHelper.Entities
 				MoveTo(unpressedTarget);
 				SceneAs<Level>().ParticlesFG.Emit(mirrorMode ? P_PressAMirror : P_PressA, 10, Position + sprite.Position, direction.Perpendicular() * 6f, sprite.Rotation - (float)Math.PI);
 				SceneAs<Level>().ParticlesFG.Emit(mirrorMode ? P_PressBMirror : P_PressB, 4, Position + sprite.Position, direction.Perpendicular() * 6f, sprite.Rotation - (float)Math.PI);
-				claimedGate?.Close();
 				if (persistent) SceneAs<Level>().Session.SetFlag(StateFlag, false);
 			}
 			else
@@ -228,34 +238,9 @@ namespace AidenHelper.Entities
 			Position -= pressDirection * 2f;
 			SceneAs<Level>().ParticlesFG.Emit(mirrorMode ? P_PressAMirror : P_PressA, 10, Position + sprite.Position, direction.Perpendicular() * 6f, sprite.Rotation - (float)Math.PI);
 			SceneAs<Level>().ParticlesFG.Emit(mirrorMode ? P_PressBMirror : P_PressB, 4, Position + sprite.Position, direction.Perpendicular() * 6f, sprite.Rotation - (float)Math.PI);
-			claimedGate?.SwitchOpen();
 
 			base.Scene.Entities.FindFirst<TempleMirrorPortal>()?.OnSwitchHit(Math.Sign(base.X - (float)(base.Scene as Level).Bounds.Center.X));
 			if (persistent) SceneAs<Level>().Session.SetFlag(StateFlag);
-		}
-
-		private TempleGate GetGate()
-		{
-			List<Entity> entities = base.Scene.Tracker.GetEntities<TempleGate>();
-			TempleGate templeGate = null;
-			float num = 0f;
-			foreach (TempleGate item in entities)
-			{
-				if (item.Type == TempleGate.Types.NearestSwitch && !item.ClaimedByASwitch && item.LevelID == id.Level)
-				{
-					float num2 = Vector2.DistanceSquared(Position, item.Position);
-					if (templeGate == null || num2 < num)
-					{
-						templeGate = item;
-						num = num2;
-					}
-				}
-			}
-			if (templeGate != null)
-			{
-				templeGate.ClaimedByASwitch = true;
-			}
-			return templeGate;
 		}
 
 		public static string GetStateFlag(EntityID id)

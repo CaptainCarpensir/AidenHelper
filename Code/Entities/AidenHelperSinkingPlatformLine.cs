@@ -1,8 +1,7 @@
-﻿using Celeste;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Monocle;
 
-namespace AidenHelper.Entities
+namespace Celeste.Mod.AidenHelper.Entities
 {
 	public class AidenHelperSinkingPlatformLine : Entity
 	{
