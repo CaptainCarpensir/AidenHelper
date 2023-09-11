@@ -45,3 +45,7 @@ entities.AidenHelper/LinkedTempleGate.attributes.description.reversed=A reversed
 style.effects.AidenHelper/MeteorShower.name=Meteor Shower
 style.effects.AidenHelper/MeteorShower.attribute.frequency=Frequency
 style.effects.AidenHelper/MeteorShower.description.frequency=The frequency which meteors appear on average in meteors per second.
+
+# Invert Stamina On Dash Trigger
+triggers.AidenHelper/InvertStaminaOnDashTrigger.placements.name.trigger=Invert Stamina On Dash
+triggers.AidenHelper/InvertStaminaOnDashTrigger.attributes.description.enable=If checked, will enable stamina inversion when the player dashes.

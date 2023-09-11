@@ -1,12 +1,14 @@
 ﻿using System;
 using Celeste.Mod.AidenHelper.Effects;
+using Celeste.Mod.AidenHelper.Triggers;
 
 namespace Celeste.Mod.AidenHelper.Module
 {
     public class AidenHelper : EverestModule
     {
+        public override Type SessionType => typeof(AidenHelperSession);
+        public AidenHelperSession Session => (AidenHelperSession)_Session;
 
-        // Only one alive module instance can exist at any given time.
         public static AidenHelper Instance;
 
         public AidenHelper()
@@ -14,27 +16,26 @@ namespace Celeste.Mod.AidenHelper.Module
             Instance = this;
         }
 
-        // Set up any hooks, event handlers and your mod in general here.
-        // Load runs before Celeste itself has initialized properly.
         public override void Load()
         {
             Everest.Events.Level.OnLoadBackdrop += onLoadBackdrop;
+
+            InvertStaminaOnDashTrigger.Load();
         }
 
-        // Optional, initialize anything after Celeste has initialized itself properly.
         public override void Initialize()
         {
         }
 
-        // Optional, do anything requiring either the Celeste or mod content here.
         public override void LoadContent(bool firstLoad)
         {
         }
 
-        // Unload the entirety of your mod's content. Free up any native resources.
         public override void Unload()
         {
             Everest.Events.Level.OnLoadBackdrop -= onLoadBackdrop;
+
+            InvertStaminaOnDashTrigger.Unload();
         }
 
         private Backdrop onLoadBackdrop(MapData map, BinaryPacker.Element child, BinaryPacker.Element above)
