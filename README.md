@@ -7,6 +7,11 @@ Note, I made the decision not to release Ahorn plugins for the mod on Gamebanana
  If you find bugs, create a new issue or a pull request to let me know, or fix it yourself.
 
 # Changelog
+## Version 1.2.1 - Minor update
+### Features:
+ - Invert Stamina on Dash Trigger - a requested feature, which gives the player funky stamina!
+
+# Changelog
 ## Version 1.1 - An effect ported from Strawberry Jam!
 #### Features:
  - Added Linked Temple Gates - they only work alongside the Linked Dash Switches, and are designed to make their use more intuitive!
