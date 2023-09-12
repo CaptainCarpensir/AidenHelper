@@ -38,7 +38,7 @@ jobs:
           cp everest.yaml AidenHelper/
 
       - name: Update everest.yaml DLL location
-        run: sed -i 's/bin\/Debug/Code/' $1 AidenHelper/everest.yaml
+        run: sed -i 's/bin\/Debug\/net452/Code/' AidenHelper/everest.yaml
 
       - name: Upload artifact
         uses: actions/upload-artifact@v1.0.0
