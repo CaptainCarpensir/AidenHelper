@@ -19,11 +19,9 @@ jobs:
       - name: Package mod
         run: |
           mkdir AidenHelper
-          mkdir AidenHelper/Loenn
-          mkdir AidenHelper/Graphics
           mkdir AidenHelper/Code
-          mv Loenn/* AidenHelper/Loenn
-          mv Graphics/* AidenHelper/Graphics
+          mv Loenn AidenHelper
+          mv Graphics AidenHelper
           cp bin/Debug/AidenHelper.dll AidenHelper/Code/
           cp everest.yaml AidenHelper/
 
