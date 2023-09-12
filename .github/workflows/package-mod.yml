@@ -38,7 +38,7 @@ jobs:
           cp everest.yaml AidenHelper/
 
       - name: Update everest.yaml DLL location
-        run: ./replace-dll-location.sh AidenHelper/everest.yaml
+        run: sed -i 's/bin\/Debug/Code/' $1 AidenHelper/everest.yaml
 
       - name: zip AidenHelper
         run: zip -r AidenHelper.zip AidenHelper
