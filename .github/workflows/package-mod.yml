@@ -26,15 +26,14 @@ jobs:
         working-directory: Code/
         run: |
           dotnet restore
-          dotnet build "/p:Configuration=Release"
+          dotnet build AidenHelper.sln "/p:Configuration=Release"
 
       - name: Package mod
         run: |
           mkdir AidenHelper
           mkdir AidenHelper/Code
-          ls
-          mv Loenn/ AidenHelper/
-          mv Graphics/ AidenHelper/
+          mv ./Loenn/ ./AidenHelper/
+          mv ./Graphics/ ./AidenHelper/
           cp bin/Debug/AidenHelper.dll AidenHelper/Code/
           cp everest.yaml AidenHelper/
 
