@@ -41,7 +41,7 @@ jobs:
         run: sed -i 's/bin\/Debug/Code/' $1 AidenHelper/everest.yaml
 
       - name: zip AidenHelper
-        run: zip -r AidenHelper.zip AidenHelper
+        run: zip -r AidenHelper AidenHelper
 
       - name: Upload artifact
         uses: actions/upload-artifact@v1.0.0
