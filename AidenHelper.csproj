@@ -1,95 +1,101 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{9F52AAAB-41C8-4E99-B929-D1530A9E27B3}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AidenHelper</RootNamespace>
+    <LangVersion>9.0</LangVersion>
+    <TargetFramework>net452</TargetFramework>
     <AssemblyName>AidenHelper</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
+    <RootNamespace>Celeste.Mod.AidenHelper</RootNamespace>
+    <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
+    <ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>true</ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+
+    <CelestePrefix Condition="'$(CelestePrefix)' == '' And Exists('..\..\Celeste.exe')">..\..</CelestePrefix>
+    <CelestePrefix Condition="'$(CelestePrefix)' == ''">lib-stripped</CelestePrefix>
+    <CelesteType Condition="'$(CelesteType)' == '' And Exists('$(CelestePrefix)\BuildIsXNA.txt')">XNA</CelesteType>
+    <CelesteType Condition="'$(CelesteType)' == ''">FNA</CelesteType>
+    <XNAPath Condition="'$(XNAPath)' == ''">$(WINDIR)\Microsoft.NET\assembly\GAC_32\{0}\v4.0_4.0.0.0__842cf8be1de50553\{0}.dll</XNAPath>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+  
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.IgnoresAccessChecksToAttribute">
+      <_Parameter1>Celeste</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0" PrivateAssets="all" />
+    <PackageReference Include="MonoMod" Version="22.1.4.3" PrivateAssets="all" ExcludeAssets="runtime" />
+    <PackageReference Include="MonoMod.RuntimeDetour" Version="22.1.4.3" PrivateAssets="all" ExcludeAssets="runtime" />
+    <PackageReference Include="MonoMod.Utils" Version="22.1.4.3" PrivateAssets="all" ExcludeAssets="runtime" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" PrivateAssets="all" ExcludeAssets="runtime" />
+    <PackageReference Include="YamlDotNet" Version="8.1.2" PrivateAssets="all" ExcludeAssets="runtime" />
+
+    <Reference Include="lib-stripped\Celeste-nstrip.exe">
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="$(CelestePrefix)\MMHOOK_Celeste.dll">
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Batteries">
+      <HintPath>lib-stripped\Batteries.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="CavernHelper">
+      <HintPath>lib-stripped\CavernHelper.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="CollabUtils2">
+      <HintPath>lib-stripped\CollabUtils2.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="ExtendedVariantMode">
+      <HintPath>lib-stripped\ExtendedVariantMode.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="FactoryHelper">
+      <HintPath>lib-stripped\FactoryHelper.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="MaxHelpingHand">
+      <HintPath>lib-stripped\MaxHelpingHand.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="ExtendedVariantMode">
+      <HintPath>lib-stripped\ExtendedVariantMode.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <Choose>
+    <When Condition="'$(CelesteType)' == 'FNA'">
+      <ItemGroup>
+        <Reference Include="$(CelestePrefix)\FNA.dll">
+          <Private>false</Private>
+        </Reference>
+      </ItemGroup>
+    </When>
+
+    <When Condition="'$(CelesteType)' == 'XNA'">
+      <ItemGroup>
+        <Reference Include="$([System.String]::Format('$(XNAPath)', 'Microsoft.Xna.Framework'))">
+          <Private>false</Private>
+        </Reference>
+        <Reference Include="$([System.String]::Format('$(XNAPath)', 'Microsoft.Xna.Framework.Game'))">
+          <Private>false</Private>
+        </Reference>
+        <Reference Include="$([System.String]::Format('$(XNAPath)', 'Microsoft.Xna.Framework.Graphics'))">
+          <Private>false</Private>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  
+  <Target Name="CopyFiles" AfterTargets="Build">
+      <Copy SourceFiles="$(OutputPath)\$(AssemblyName).dll" DestinationFolder="bin" />
+      <Copy SourceFiles="$(OutputPath)\$(AssemblyName).pdb" DestinationFolder="bin" />
+  </Target>
+  
+  <PropertyGroup>
+      <PathMap>$(MSBuildProjectDirectory)=AidenHelper/</PathMap>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Celeste">
-      <HintPath>..\..\Celeste.exe</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="FNA">
-      <HintPath>..\..\FNA.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="MMHOOK_Celeste">
-      <HintPath>..\..\MMHOOK_Celeste.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Mono.Cecil">
-      <HintPath>..\..\Mono.Cecil.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="MonoMod.Utils">
-      <HintPath>..\..\MonoMod.Utils.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Xml" />
-    <Reference Include="YamlDotNet">
-      <HintPath>..\..\YamlDotNet.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Code\Effects\MeteorShower.cs" />
-    <Compile Include="Code\Entities\DashDashBlock.cs" />
-    <Compile Include="Code\Entities\DashKevin.cs" />
-    <Compile Include="Code\Entities\LinkedDashSwitch.cs" />
-    <Compile Include="Code\Entities\AidenHelperSinkingPlatformLine.cs" />
-    <Compile Include="Code\Entities\LinkedSinkingPlatform.cs" />
-    <Compile Include="Code\Entities\LinkedTempleGate.cs" />
-    <Compile Include="Code\Triggers\InvertStaminaOnDashTrigger.cs" />
-    <Compile Include="Module\AidenHelperModule.cs" />
-    <Compile Include="Module\AidenHelperSession.cs" />
-    <Compile Include="obj\Debug\.NETFramework,Version=v4.5.2.AssemblyAttributes.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Ahorn\entities\AidenHelperLinkedSinkingPlatform.jl" />
-    <None Include="Ahorn\lang\en_gb.lang" />
-    <None Include="Loenn\effects\meteorShower.lua" />
-    <None Include="Loenn\entities\dashDashBlock.lua" />
-    <None Include="Loenn\entities\dashKevin.lua" />
-    <None Include="Loenn\entities\linkedDashSwitch.lua" />
-    <None Include="Loenn\entities\linkedSinkingPlatform.lua" />
-    <None Include="Loenn\entities\linkedTempleGate.lua" />
-    <None Include="Loenn\lang\en_gb.lang" />
-    <None Include="Loenn\triggers\invertStaminaOnDashTrigger.lua" />
-    <None Include="obj\Debug\AidenHelper.csproj.AssemblyReference.cache" />
-    <None Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="bin\Debug\" />
-    <Folder Include="bin\Release\" />
-    <Folder Include="obj\Debug\TempPE\" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+
 </Project>

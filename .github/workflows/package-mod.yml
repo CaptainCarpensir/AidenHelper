@@ -4,6 +4,8 @@ on:
   push:
     branches: [ main ]
     paths-ignore:
+      - /**
+      - .github/**
       - .gitignore
       - .gitattributes
       - LICENSE.txt
@@ -20,7 +22,7 @@ jobs:
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 4.5.2
+          dotnet-version: 6.0.x
 
       - name: Build code with .NET Core
         run: |
