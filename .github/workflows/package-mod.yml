@@ -35,7 +35,7 @@ jobs:
           mkdir AidenHelper/Code
           mv ./Loenn/ ./AidenHelper/
           mv ./Graphics/ ./AidenHelper/
-          cp bin/Debug/AidenHelper.dll AidenHelper/Code/
+          cp bin/AidenHelper.dll AidenHelper/Code/
           cp everest.yaml AidenHelper/
 
       - name: Update everest.yaml DLL location
