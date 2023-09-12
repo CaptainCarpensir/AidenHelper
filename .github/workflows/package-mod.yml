@@ -4,7 +4,6 @@ on:
   push:
     branches: [ main ]
     paths-ignore:
-      - .github/**
       - .gitignore
       - .gitattributes
       - LICENSE.txt
@@ -20,6 +19,7 @@ jobs:
         run: |
           mkdir AidenHelper
           mkdir AidenHelper/Code
+          ls
           mv Loenn/ AidenHelper/
           mv Graphics/ AidenHelper/
           cp bin/Debug/AidenHelper.dll AidenHelper/Code/
