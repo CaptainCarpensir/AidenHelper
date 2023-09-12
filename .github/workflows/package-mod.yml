@@ -40,11 +40,8 @@ jobs:
       - name: Update everest.yaml DLL location
         run: sed -i 's/bin\/Debug/Code/' $1 AidenHelper/everest.yaml
 
-      - name: zip AidenHelper
-        run: zip -r AidenHelper AidenHelper
-
       - name: Upload artifact
         uses: actions/upload-artifact@v1.0.0
         with:
-          name: AidenHelper.zip
-          path: ./AidenHelper.zip
+          name: AidenHelper
+          path: ./AidenHelper
