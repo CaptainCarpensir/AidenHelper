@@ -20,8 +20,8 @@ jobs:
         run: |
           mkdir AidenHelper
           mkdir AidenHelper/Code
-          mv Loenn AidenHelper
-          mv Graphics AidenHelper
+          mv Loenn/ AidenHelper/
+          mv Graphics/ AidenHelper/
           cp bin/Debug/AidenHelper.dll AidenHelper/Code/
           cp everest.yaml AidenHelper/
 
