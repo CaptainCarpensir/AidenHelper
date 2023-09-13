@@ -21,6 +21,7 @@ namespace Celeste.Mod.AidenHelper.Module
             Everest.Events.Level.OnLoadBackdrop += onLoadBackdrop;
 
             InvertStaminaOnDashTrigger.Load();
+            RunAndGunTrigger.Load();
         }
 
         public override void Initialize()
@@ -36,6 +37,7 @@ namespace Celeste.Mod.AidenHelper.Module
             Everest.Events.Level.OnLoadBackdrop -= onLoadBackdrop;
 
             InvertStaminaOnDashTrigger.Unload();
+            RunAndGunTrigger.Unload();
         }
 
         private Backdrop onLoadBackdrop(MapData map, BinaryPacker.Element child, BinaryPacker.Element above)

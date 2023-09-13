@@ -46,6 +46,11 @@ style.effects.AidenHelper/MeteorShower.name=Meteor Shower
 style.effects.AidenHelper/MeteorShower.attribute.frequency=Frequency
 style.effects.AidenHelper/MeteorShower.description.frequency=The frequency which meteors appear on average in meteors per second.
 
-# Invert Stamina On Dash Trigger
-triggers.AidenHelper/InvertStaminaOnDashTrigger.placements.name.trigger=Invert Stamina On Dash
+# Invert Stamina on Dash Trigger
+triggers.AidenHelper/InvertStaminaOnDashTrigger.placements.name.trigger=Invert Stamina on Dash
 triggers.AidenHelper/InvertStaminaOnDashTrigger.attributes.description.enable=If checked, will enable stamina inversion when the player dashes.
+
+# Run and Gun Trigger
+triggers.AidenHelper/RunAndGunTrigger.placements.name.trigger=Run and Gun
+triggers.AidenHelper/RunAndGunTrigger.attributes.description.enable=If checked, will enable run and gun mode, where the player is locked into horizontal movement. Will disable run and gun mode if not checked.
+triggers.AidenHelper/RunAndGunTrigger.attributes.description.facingRight=If enable is checked, this sets the direction the player is facing during run and gun mode.
