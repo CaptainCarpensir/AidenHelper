@@ -12,6 +12,7 @@ dashDashBlock.placements = {
         permanent = false,
         horizontal = true,
         vertical = true,
+        requiresLineOfSight = true,
         width = 8,
         height = 8
     }

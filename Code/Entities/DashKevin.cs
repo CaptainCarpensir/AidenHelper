@@ -221,7 +221,7 @@ namespace Celeste.Mod.AidenHelper.Entities
 				returnLoopSfx.Param("submerged", Submerged ? 1 : 0);
 			}
 
-			if (Input.Dash.Pressed)
+			if (Input.Dash.Pressed || Input.CrouchDash.Pressed)
             {
                 foreach (Player entity in base.Scene.Tracker.GetEntities<Player>())
                 {

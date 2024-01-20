@@ -34,6 +34,7 @@ entities.AidenHelper/DashDashBlock.attributes.description.tiletype=Determines th
 entities.AidenHelper/DashDashBlock.attributes.description.permanent=Once broken, the block will remain that way, even if the player dies.
 entities.AidenHelper/DashDashBlock.attributes.description.horizontal=Whether the dash block can be destroyed by pressing dash while in a horizontal position from the block.
 entities.AidenHelper/DashDashBlock.attributes.description.vertical=Whether the dash block can be destroyed by pressing dash while in a vertical position from the block.
+entities.AidenHelper/DashDashBlock.attributes.description.requiresLineOfSight=Whether the block requires line of sight to activate.
 
 # Linked Temple Gate
 entities.AidenHelper/LinkedTempleGate.placements.name.linkedTempleGate=Linked Temple Gate
