@@ -25,6 +25,7 @@ entities.AidenHelper/DashKevin.placements.name.vertical=Dash Kevin (Vertical)
 entities.AidenHelper/DashKevin.placements.name.horizontal=Dash Kevin (Horizontal)
 entities.AidenHelper/DashKevin.attributes.description.axes=Determines which directions the Dash Kevin can move.
 entities.AidenHelper/DashKevin.attributes.description.chillout=Whether the block should have the large face and get tired after moving.
+entities.AidenHelper/DashKevin.attributes.description.requiresLineOfSight=Whether the block requires line of sight to activate.
 
 # Dash Dash Block
 entities.AidenHelper/DashDashBlock.placements.name.dash_dash_block=Dash Block

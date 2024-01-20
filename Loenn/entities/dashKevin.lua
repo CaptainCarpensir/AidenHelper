@@ -28,7 +28,8 @@ for _, axis in pairs(axesOptions) do
             width = 24,
             height = 24,
             axes = axis,
-            chillout = false
+            chillout = false,
+            requiresLineOfSight = true
         }
     })
 end

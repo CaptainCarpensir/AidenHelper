@@ -52,6 +52,7 @@ namespace Celeste.Mod.AidenHelper.Entities
 		private bool canMoveHorizontally;
 		private bool chillOut;
 		private bool giant;
+		private bool requiresLineOfSight;
 
 		private Sprite face;
 
@@ -131,12 +132,65 @@ namespace Celeste.Mod.AidenHelper.Entities
 		public DashKevin(EntityData data, Vector2 offset)
 			: this(data.Position + offset, data.Width, data.Height, data.Enum("axes", Axes.Both), data.Bool("chillout"))
 		{
+			requiresLineOfSight = data.Bool("requiresLineOfSight");
 		}
 
 		public override void Added(Scene scene)
 		{
 			base.Added(scene);
 			level = SceneAs<Level>();
+		}
+
+		// Some code for this function is taken from CommunalHelper, written by Catapillie
+		// https://github.com/CommunalHelper/CommunalHelper/blob/dev/src/Entities/Misc/Melvin.cs
+		private bool IsPlayerSeen(Player player, Vector2 dir)
+		{
+			Rectangle rect = new Rectangle();
+			int y1 = (int)Math.Max(player.Top, Top);
+			int y2 = (int)Math.Min(player.Bottom, Bottom);
+			int x1 = (int)Math.Max(player.Left, Left);
+			int x2 = (int)Math.Min(player.Right, Right);
+			if (dir.X == 1 && dir.Y == 0)
+            {
+				// right
+				rect = new Rectangle((int)(X + Width), y1, (int)(player.Left - X - Width), y2 - y1);
+			} 
+			else if (dir.X == -1 && dir.Y == 0)
+            {
+				// left
+				rect = new Rectangle((int)player.Right, y1, (int)(X - player.Right), y2 - y1);
+			}
+			else if (dir.X == 0 && dir.Y == 1)
+            {
+				// down
+				rect = new Rectangle(x1, (int)(Y + Height), x2 - x1, (int)(player.Top - Y - Height));
+			}
+			else if (dir.X == 0 && dir.Y == -1)
+            {
+				// up
+				rect = new Rectangle(x1, (int)player.Bottom, x2 - x1, (int)(Y - player.Bottom));
+			}
+
+			if (dir.Y != 0)
+			{
+				for (int i = 0; i < rect.Width; i++)
+				{
+					Rectangle lineRect = new(rect.X + i, rect.Y, 1, rect.Height);
+					if (!Scene.CollideCheck<Solid>(lineRect))
+						return true;
+				}
+				return false;
+			}
+			else
+			{
+				for (int i = 0; i < rect.Height; i++)
+				{
+					Rectangle lineRect = new(rect.X, rect.Y + i, rect.Width, 1);
+					if (!Scene.CollideCheck<Solid>(lineRect))
+						return true;
+				}
+				return false;
+			}
 		}
 
 		public override void Update()
@@ -182,10 +236,11 @@ namespace Celeste.Mod.AidenHelper.Entities
 						dir.X = dir.X / Math.Abs(dir.X);
 						dir.Y = 0;
 					}
-					if (CanActivate(dir))
-					{
-						Attack(dir);
-					}
+					if (requiresLineOfSight && !IsPlayerSeen(entity, dir) || !CanActivate(dir))
+                    {
+						return;
+                    }
+					Attack(dir);
 				}
             }
 		}
