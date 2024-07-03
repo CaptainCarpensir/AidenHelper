@@ -102,7 +102,6 @@ namespace Celeste.Mod.AidenHelper.Entities
 
                 if ((dir.Y == 0 && horizontal) || (dir.X == 0 && vertical))
                 {
-                    Console.WriteLine("huh");
                     if (requiresLineOfSight && !IsPlayerSeen(entity, dir))
                     {
                         return;

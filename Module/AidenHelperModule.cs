@@ -1,4 +1,5 @@
 ﻿using System;
+using Monocle;
 using Celeste.Mod.AidenHelper.Effects;
 using Celeste.Mod.AidenHelper.Triggers;
 
@@ -44,7 +45,7 @@ namespace Celeste.Mod.AidenHelper.Module
         {
             if (child.Name.Equals("AidenHelper/MeteorShower", StringComparison.OrdinalIgnoreCase))
             {
-                return new MeteorShower(child.AttrFloat("frequency"));
+                return new MeteorShower(child.AttrFloat("frequency"), Calc.HexToColor(child.Attr("color", "FFFFFF")));
             }
             return null;
         }

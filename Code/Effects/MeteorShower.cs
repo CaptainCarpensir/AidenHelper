@@ -17,13 +17,15 @@ namespace Celeste.Mod.AidenHelper.Effects
         }
 
         private List<Meteor> meteors;
+        private Color MeteorColor;
         public float MeteorFrequency;
 
         private List<List<MTexture>> textures;
 
-        public MeteorShower(float meteorFrequency)
+        public MeteorShower(float meteorFrequency, Color color)
         {
             MeteorFrequency = meteorFrequency;
+            MeteorColor = color;
             textures = new List<List<MTexture>> {
                 GFX.Game.GetAtlasSubtextures("bgs/AidenHelper/meteors/arcComet"),
                 GFX.Game.GetAtlasSubtextures("bgs/AidenHelper/meteors/slantComet")
@@ -81,7 +83,7 @@ namespace Celeste.Mod.AidenHelper.Effects
                 if (textAnimId < textures[meteors[i].TextureSet].Count)
                 {
                     MTexture texture = textures[meteors[i].TextureSet][textAnimId];
-                    texture.DrawCentered(meteors[i].Position, Color.White, 1f, meteors[i].Rotation);
+                    texture.DrawCentered(meteors[i].Position, MeteorColor, 1f, meteors[i].Rotation);
                 } 
                 else
                 {
