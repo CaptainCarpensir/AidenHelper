@@ -31,6 +31,7 @@ linkedSinkingPlatform.placements = {
         surfaceIndex = 15,
         width = 8,
         reversed = false,
+        returnSynced = false,
         texture = "default"
     }
 }

@@ -10,6 +10,7 @@ entities.AidenHelper/LinkedSinkingPlatform.attributes.description.surfaceIndex=I
 entities.AidenHelper/LinkedSinkingPlatform.attributes.description.width=The width of the platform.
 entities.AidenHelper/LinkedSinkingPlatform.attributes.description.texture=The texture the platform uses. Pulled from "objects/woodPlatform/" by default.
 entities.AidenHelper/LinkedSinkingPlatform.attributes.description.reversed=Defines whether the platform works in reverse. A reversed linked platform only has functionality when linked with a non-reversed linked platform.
+entities.AidenHelper/LinkedSinkingPlatform.attributes.description.returnSynced=Defines whether the platforms return synced instead of at the default return speed.
 
 # Linked Dash Switches
 entities.AidenHelper/LinkedDashSwitch.placements.name.linkedDashSwitch=Linked Dash Switch

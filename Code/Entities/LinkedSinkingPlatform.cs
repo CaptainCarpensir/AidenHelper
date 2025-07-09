@@ -19,6 +19,7 @@ namespace Celeste.Mod.AidenHelper.Entities
 		private float riseTimer;
 		private float downTimer;
 		private bool reversed;
+		private bool returnSynced;
 		private bool enabled;
 
 		// Used for boolean case to prevent lag caused by time crystals
@@ -65,6 +66,7 @@ namespace Celeste.Mod.AidenHelper.Entities
 			groupFlag = data.Attr("flag", "") + levelTag;
 			endY = data.NodesWithPosition(new Vector2(0, 0))[1].Y + offset.Y;
 			reversed = data.Bool("reversed");
+			returnSynced = data.Bool("returnSynced");
 			outerColor = data.Attr("outerColor", "2a1923");
 			innerColor = data.Attr("innerColor", "160b12");
 			if (reversed) this.Position = new Vector2(X, endY);
@@ -197,7 +199,7 @@ namespace Celeste.Mod.AidenHelper.Entities
 			else
 			{
 				downTimer -= Engine.DeltaTime;
-				speed = Calc.Approach(speed, (reversed ? -1 : 1) * -50f, 400f * mult * Engine.DeltaTime);
+				speed = Calc.Approach(speed, (reversed ? -1 : 1) * (returnSynced ? mult : 1) * -50f, 400f * mult * Engine.DeltaTime);
 			}
 
 
